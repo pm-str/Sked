@@ -1,0 +1,11 @@
+<div class="col-lg-3">
+    <ul class="nav nav-pills nav-stacked">
+        {% url 'home:current' as home_url %}
+        {% url 'default' as default %}
+        <li {% if request.path == home_url or request.path == default %} class="active" {% endif %}>
+            <a href="{{ home_url }}">Current</a></li>
+        {% url '' as settings %}
+        <li {% if request.path == settings %} class="active" {% endif %}>
+            <a href="{{ settings }}">Settings</a></li>
+    </ul>
+</div>

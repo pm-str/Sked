@@ -1,0 +1,30 @@
+<script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+            {
+              theme: "theme2",
+              title: {
+                text: "The amount of time for each case"
+              },
+              data: [
+                {
+                  type: "pie",
+                  showInLegend: true,
+                  toolTipContent: "{y}%",
+                  legendText: "{indexLabel}",
+                  dataPoints: [
+                    {% for object in table %}
+                      {
+                        y: {{ object.start_time.hour }}, legendText: "{{ object.name }}", label: "{{ object.name }}"
+                        {% if forloop.counter == 1 %}, exploded: true {% endif %}
+                      },
+                    {% endfor %}
+                  ]
+                }
+              ]
+            });
+    chart.render();
+  }
+</script>
+<title>CanvasJS Example</title>
+<div id="chartContainer" style="height: 400px; width: 100%;"></div>

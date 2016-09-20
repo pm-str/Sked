@@ -1,0 +1,19 @@
+{% extends 'base/base_page.html' %}
+
+{% block menu %}
+  {% include 'base/menu.html' %}
+{% endblock %}
+{% block inner %}
+  <div style="margin-bottom: 25px;" class="col-lg-9">
+  {% block event_table %}{% endblock %}
+    <div class="btn-group">
+      <a href="/home/chart0" class="btn btn-success {% if number_chart == '0' %}active{% endif %}">Pie</a>
+      <a href="/home/chart1" class="btn btn-primary {% if number_chart == '1'%}active{% endif %}">Range</a>
+    </div>
+  {% if number_chart == '0'%}
+    {% include 'home/pie_chart.html' %}
+  {% else %}
+    {% include 'home/range_chart.html' %}
+  {% endif %}
+  </div>
+{% endblock %}

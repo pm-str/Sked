@@ -1,0 +1,56 @@
+{% load staticfiles %}
+{% load static %}
+{% load tz %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ app_header }}</title>
+  {% block css %}
+    <link href="{% static 'assets/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="all"/>
+    <link href="{% static 'assets/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css"
+          media="all"/>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all"/>
+  {% endblock %}
+</head>
+<body>
+<div class="container">
+  <div class="navbar navbar-fixed-top navbar-default" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand">{{ datetime }}</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right" style="font-size: 16px;">
+        {% if request.user.is_superuser %}
+          <li><a href="{% url 'admin:index' %}">Administration</a></li>
+        {% endif %}
+        {% if  request.user.is_authenticated %}
+          <li><a href="{% url 'auth:logout' %}">Logout <span style="color:indigo">{{ request.user }}</span></a>
+          </li>
+        {% else %}
+          <li><a href="{% url 'auth:login' %}">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="container" style="padding-top: 80px;">
+  <div class="row row-offcanvas row-offcanvas-right">
+    {% block login %}{% endblock %}
+    {% block home %}
+      {% block menu %}{% endblock %}
+      {% block inner %}{% endblock%}
+    {% endblock %}
+  </div>
+</div>
+{% include 'base/footer.html' %}
+{% block js %}
+  <script src="{% static 'assets/canvasjs/canvasjs.min.js' %}"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+  <script src="{% static 'assets/bootstrap/bootstrap.min.js' %}"></script>
+{% endblock %}
+</body>
+</html>

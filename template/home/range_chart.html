@@ -1,0 +1,33 @@
+<script type="text/javascript">
+window.onload = function () {
+	var chart = new CanvasJS.Chart("chartContainer",
+	{
+		title: {
+			text: "The period of each case"
+		},
+		axisY: {
+			includeZero: false,
+			interval: 2,
+			valueFormatString: "#0.##"
+		},
+		axisX: {
+            interal: 1,
+			valueFormatString: "##,##"
+		},
+		data: [
+		{
+			type: "rangeBar",
+			yValueFormatString: "#0.##",
+			dataPoints: [
+				{x: 1123, y: [ 17,33]},
+				{x: 2233, y: [ 18,35]},
+				{x: 3454, y: [ 18,32]}
+			]
+		}
+		]
+	});
+	chart.render();
+}
+</script>
+<title>CanvasJS Example</title>
+<div id="chartContainer" style="height: 400px; width: 100%;">

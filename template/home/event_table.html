@@ -1,0 +1,41 @@
+{% extends 'home/content.html' %}
+
+{% block event_table %}
+    <div class="page-header">
+      <h1 class="h3">{{ app_header }}</h1>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Active events<br/>
+        {% block message %}{% endblock %}
+      </div>
+      <table class="table table-striped table-hover table-bordered">
+        {% if table %}
+          <thead>
+          <tr>
+            <th><strong>#</strong></th>
+            <th>Название</th>
+            <th>Время начала</th>
+            <th>Продолжительность</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for object in table %}
+            <tr>
+              <td><strong>{{ forloop.counter }}.</strong></td>
+              <td>{{ object.name }}</td>
+              <td>{{ object.start_time }}</td>
+              <td>{{ object.length }}</td>
+            </tr>
+          {% endfor %}
+
+        {% else %}
+          <tr>
+            <td class="text-center">Empty.</td>
+          </tr>
+        {% endif %}
+        </tbody>
+      </table>
+    </div>
+    <hr style=" margin-top:30px; height: 2px; color: darkgray; background-color: darkgray; border: none">
+{% endblock %}
