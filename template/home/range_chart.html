@@ -1,33 +1,80 @@
-<script type="text/javascript">
-window.onload = function () {
-	var chart = new CanvasJS.Chart("chartContainer",
-	{
-		title: {
-			text: "The period of each case"
-		},
-		axisY: {
-			includeZero: false,
-			interval: 2,
-			valueFormatString: "#0.##"
-		},
-		axisX: {
-            interal: 1,
-			valueFormatString: "##,##"
-		},
-		data: [
-		{
-			type: "rangeBar",
-			yValueFormatString: "#0.##",
-			dataPoints: [
-				{x: 1123, y: [ 17,33]},
-				{x: 2233, y: [ 18,35]},
-				{x: 3454, y: [ 18,32]}
-			]
-		}
-		]
-	});
-	chart.render();
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
 }
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/gantt.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/none.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+<!-- Chart code -->
+<script>
+AmCharts.useUTC = true;
+var chart = AmCharts.makeChart( "chartdiv", {
+    "type": "gantt",
+    "theme": "Light",
+    "marginRight": 70,
+    "period": "hh",
+    "dataDateFormat":"YYYY-MM-DD",
+    "balloonDateFormat": "JJ:NN",
+    "columnWidth": 0.5,
+    "valueAxis": {
+        "type": "date",
+        "minimum": 6,
+        "maximum": 24
+    },
+    "brightnessStep": 10,
+    "graph": {
+        "fillAlphas": 1,
+        "balloonText": "<b>[[task]]</b>: [[open]]<br><b>Продолжительность</b> - [[duration]]"
+    },
+    "rotate": true,
+    "categoryField": "category",
+    "segmentsField": "segments",
+    "colorField": "color",
+    "startDate": "{{ date }}",
+    "startField": "start",
+    "endField": "end",
+    "durationField": "duration",
+    "dataProvider": [
+      {% for object in table %}
+        {
+          "category": "{{ object.name }}",
+          "segments":[{
+            "start": {{ object.start_time.hour }},
+            "duration": {{ object.length  }},
+            "color": "{{ object.color }}",
+            "task": "{{ object.name }}"
+          }]
+
+        },
+    {% endfor %}
+    ],
+    "valueScrollbar": {
+        "autoGridCount":true
+    },
+    "chartCursor": {
+        "cursorColor":"#55bb76",
+        "valueBalloonsEnabled": true,
+        "cursorAlpha": 0,
+        "valueLineAlpha":0.5,
+        "valueLineBalloonEnabled": true,
+        "valueLineEnabled": true,
+        "zoomable":false,
+        "valueZoomable":true
+    },
+    "export": {
+        "enabled": true
+     }
+} );
 </script>
-<title>CanvasJS Example</title>
-<div id="chartContainer" style="height: 400px; width: 100%;">
+
+<!-- HTML -->
+<div id="chartdiv"></div>
