@@ -7,8 +7,9 @@ class Task(models.Model):
     description = models.TextField(blank=True, verbose_name='Description')
     date_created = models.DateTimeField(auto_now_add=True)
     start_time = models.DateTimeField(verbose_name='The time of notification')
-    length = models.DecimalField(verbose_name='The amount of time for this task', max_digits=20, decimal_places=2)
+    end_time = models.DateTimeField(verbose_name='The expiry time of notification')
     warning_time = models.IntegerField(verbose_name='The time for warning before of notification')
+    color = models.CharField(verbose_name='Color for this task', max_length=7, blank=True)
 
     def __unicode__(self):
         return str(self.name)

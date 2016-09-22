@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.contrib import messages
 from django.utils import timezone
-
+import datetime
 
 class AppContextMixin(object):
     app_header = None
@@ -10,6 +10,8 @@ class AppContextMixin(object):
         context = super(AppContextMixin, self).get_context_data(**kwargs)
         context['app_header'] = self.app_header
         context['datetime'] = timezone.now()
+        a = datetime.date.today()
+        context['date'] = "{:%Y-%m-%d}".format(a)
         return context
 
     def __init__(self, *args, **kwargs):

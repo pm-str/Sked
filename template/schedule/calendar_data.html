@@ -1,0 +1,22 @@
+{% extends 'schedule/content.html' %}
+{% load static %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel='stylesheet' href="{% static 'assets/fullcalendar/fullcalendar.css' %}"/>
+{% endblock %}
+
+{% block data %}
+  <div id='calendar'></div>
+{% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  <script src="{% static 'assets/fullcalendar/jquery.min.js' %}"></script>
+  <script src="{% static 'assets/fullcalendar/moment.min.js' %}"></script>
+  <script src="{% static 'assets/fullcalendar/fullcalendar.js' %}"></script>
+  <!-- For theme -->
+  <script src="{% static 'assets/fullcalendar/cupertino/jquery-ui.min.css' %}"></script>
+  <!-- This is responsible for activating the calendar -->
+  <script src="{% static 'js/fullcal_conf.js' %}"></script>
+{% endblock %}
