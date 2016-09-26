@@ -1,4 +1,3 @@
-from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from app.contrib.mixins import AppContextMixin
 from datetime import datetime, date, time, timedelta
@@ -27,6 +26,4 @@ class GetTask(AppContextMixin, TemplateView):
         return super(GetTask, self).get_context_data(*args, **kwargs)
 
 
-def change_chart(request, number):
-    request.session['chart'] = number
-    return redirect('home:current')
+

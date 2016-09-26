@@ -14,7 +14,7 @@ $(document).ready(function () {
         // event dragging & resizing
         editable: true,
         // header
-        color: 'yellow',
+        color: 'white',
         textColor: 'black',
         monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
         monthNamesShort: ['Янв.', 'Фев.', 'Март', 'Апр.', 'Май', 'οюнь', 'οюль', 'Авг.', 'Сент.', 'Окт.', 'Ноя.', 'Дек.'],
@@ -34,7 +34,7 @@ $(document).ready(function () {
             left: 'prev,next today',
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
-        },
+        }
     })
 
 });

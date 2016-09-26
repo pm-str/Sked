@@ -22,3 +22,4 @@ class EventsAPI(APIView):
                 'end': event.end_time.isoformat()[:19]
             })
         return Response(events_response)
+

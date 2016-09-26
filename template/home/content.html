@@ -1,15 +1,24 @@
 {% extends 'base/base_page.html' %}
+{% load static %}
+
+{% block js %}
+  {{ block.super }}
+  <script src="{% static 'js/changeChart.js' %}"></script>
+{% endblock %}
 
 {% block menu %}
   {% include 'base/menu.html' %}
 {% endblock %}
+
 {% block inner %}
-  <div class="col-lg-9">
+  <div class="col-lg-12">
   {% block event_table %}{% endblock %}
+  <div class="text-center">
     <div class="btn-group">
-      <a href="/home/chart0" class="btn btn-success {% if number_chart == '0' %}active{% endif %}">Pie</a>
-      <a href="/home/chart1" class="btn btn-primary {% if number_chart == '1'%}active{% endif %}">Range</a>
+      <a data-v="0" class="btn btn-success {% if number_chart == '0' %}active{% endif %}">Pie</a>
+      <a data-v="1" class="btn btn-primary {% if number_chart == '1'%}active{% endif %}">Range</a>
     </div>
+  </div>
   {% if number_chart == '0'%}
     {% include 'home/pie_chart.html' %}
   {% else %}
