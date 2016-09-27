@@ -14,3 +14,16 @@ class ChartNumAPI(APIView):
         return Response({}, status=200)
 
 
+class PushTokenAPI(APIView):
+    http_method_names = ['get']
+
+    def get(self, *args, **kwargs):
+        try:
+            token = self.request.GET['endpoint'].split('/')[-1]
+            print(token)
+        except:
+            return Response({}, status=401)
+        return Response({}, status=200)
+
+
+
