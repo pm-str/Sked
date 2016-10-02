@@ -16,6 +16,7 @@
             <th><strong>#</strong></th>
             <th>Название</th>
             <th>Время начала</th>
+            <th>Уведомлять</th>
             <th>Продолжительность</th>
           </tr>
           </thead>
@@ -24,7 +25,8 @@
             <tr>
               <td><strong>{{ forloop.counter }}.</strong></td>
               <td>{{ object.name }}</td>
-              <td>{{ object.start_time }}</td>
+              <td>{{ object.start }}</td>
+              <td><i>{{ object.time_notice }} {{ object.date_notice }}</i></td>
               <td>{{ object.length }} мин.</td>
             </tr>
           {% endfor %}

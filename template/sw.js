@@ -33,7 +33,7 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('push', function(event) {
-  console.log('Push message', event);
+  console.log('Push', event);
 
   var title = 'Push message';
 

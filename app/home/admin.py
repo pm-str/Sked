@@ -3,6 +3,9 @@ from .models import Task
 
 
 class TaskAdmin(admin.ModelAdmin):
-    fields = ('name', 'description', 'start_time', 'end_time',  ('date', 'repeat'), 'warning_time', 'color')
+    fields = (
+        'user', 'name', 'description', ('start', 'end'), 'date',
+        'repeat', ('time_notice', 'date_notice'), 'color', 'last_request'
+    )
 
 admin.site.register(Task, TaskAdmin)

@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from app.home.models import Task
+from app.user.models import UserProfile
 
 
 class ChartNumAPI(APIView):
@@ -20,7 +20,9 @@ class PushTokenAPI(APIView):
     def get(self, *args, **kwargs):
         try:
             token = self.request.GET['endpoint'].split('/')[-1]
-            print(token)
+            a = UserProfile.objects.get(user=self.request.user)
+            a.token = token
+            a.save()
         except:
             return Response({}, status=401)
         return Response({}, status=200)
