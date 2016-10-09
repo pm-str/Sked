@@ -5,6 +5,10 @@ from django.views.generic import TemplateView
 from .models import Task
 
 
+class AddEvent(AppContextMixin, TemplateView):
+    pass
+
+
 def get_events_today(events):
     today = date.today()
     objects = events.objects.all()

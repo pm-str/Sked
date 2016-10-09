@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task
+from .models import Task, AwaitingDelivery
 
 
 class TaskAdmin(admin.ModelAdmin):
@@ -9,3 +9,4 @@ class TaskAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(Task, TaskAdmin)
+admin.site.register(AwaitingDelivery)

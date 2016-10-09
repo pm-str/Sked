@@ -21,6 +21,12 @@
 
 'use strict';
 
+var config = {
+  'api_url': '/home/api/',
+  'static_url': '/static/assets/push-notifications/app/images/',
+  'is_broadcast': true
+};
+
 console.log('Started', self);
 
 self.addEventListener('install', function(event) {
@@ -35,13 +41,42 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('push', function(event) {
   console.log('Push', event);
 
-  var title = 'Push message';
+event.waitUntil(
+    // получаем id устройства
+    self.registration.pushManager.getSubscription().then(function(subscription) {
+        var registration_id = subscription.endpoint.split("/").slice(-1)[0];
+        // получаем payload по id устройства
+        fetch(config.api_url + 'data_by_reg_id?registration_id=' + registration_id, {
+          'headers': {'Content-type': 'application/json'}
+        }).then(function(response) {
+          if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' + response.status);
+            throw new Error('Looks like there was a problem. Status Code: ' + response.status);
+          }
 
-  event.waitUntil(
-    self.registration.showNotification(title, {
-      'body': 'The Message',
-      'icon': '/static/assets/push-notifications/app/images/icon.png'
-    }));
+          return response.json().then(function (data) {
+            var title = data.title;
+            var body = data.body;
+            var url = data.url;
+            var icon = config.static_url + data.icon;
+
+            return self.registration.showNotification(title, {
+              body: body,
+              icon: icon,
+              vibrate: [200, 100, 200, 100, 200, 100, 200],
+              tag: 'MySked',
+              data: {
+                url: url
+              }
+              
+            });
+          }).catch(function (err) {
+            console.error('Unable to retrieve data', err);
+          });
+        });
+    })
+  );
+// ############
 });
 
 self.addEventListener('notificationclick', function(event) {
@@ -49,7 +84,7 @@ self.addEventListener('notificationclick', function(event) {
   // Android doesn't close the notification when you click it
   // See http://crbug.com/463146
   event.notification.close();
-  var url = 'https://youtu.be/gYMkEMCHtJ4';
+  var url = event.notification.data.url;
   // Check if there's already a tab open with this URL.
   // If yes: focus on the tab.
   // If no: open a tab with the URL.

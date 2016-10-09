@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from app.home.models import Task
-
+from datetime import datetime
 
 class EventsAPI(APIView):
     http_method_names = ['get']
@@ -18,8 +18,12 @@ class EventsAPI(APIView):
         for event in events:
             events_response.append({
                 'title': event.name,
-                'start': event.start_time.isoformat()[:19],
-                'end': event.end_time.isoformat()[:19]
+                'start': datetime.combine(event.date, event.start).isoformat()[:19],
+                'end': datetime.combine(event.date, event.end).isoformat()[:19],
+
+                # it does not work for some reason
+                'color': 'brawn',
+                'textColor': 'white'
             })
         return Response(events_response)
 

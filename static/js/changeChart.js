@@ -13,7 +13,7 @@ $('.btn-group > a').click(function (e){
                 location.reload();
             },
             401: function () {
-                alert('An error occurred downloading');
+                console.log('An error occurred downloading');
             }
         }
     });

@@ -1,6 +1,6 @@
 from gcm import GCM
-from datetime import datetime, date, time
-from app.home.models import Task
+from datetime import datetime, date
+from app.home.models import Task, AwaitingDelivery
 from celery import shared_task
 
 
@@ -26,7 +26,14 @@ def get_notice_today(events):
     return answer
 
 
-@shared_task()
+def push_all():
+    print("####################3")
+    for i in Task.objects.all():
+        token = i.user.token
+        username = i.user.name
+        push_task(username, token)
+
+
 def push_task(username, token):
     gcm = GCM("AIzaSyCNREuhmag35fb3Rn6e9C1rAJ6rU22yPLg")
     gcm.plaintext_request(registration_id=token, data={})
@@ -36,10 +43,12 @@ def push_task(username, token):
 @shared_task()
 def check_current_event():
     tasks = get_notice_today(Task)
-
+    print("********** It works ***********")
     for i in tasks:
         token = i.user.token
         username = i.user.name
+        temp = AwaitingDelivery.objects.create(queue=i)
+        temp.save()
         push_task(username, token)
         i.last_request = date.today()
         i.save()

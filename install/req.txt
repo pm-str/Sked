@@ -2,7 +2,8 @@ Django==1.9.5
 djangorestframework==3.3.3
 Pillow==3.2.0
 pytest==2.9.1
-django-gcm==1.2.0
-django-celery==3.1.17
 python-gcm==0.4
-django-rq
+django-celery
+django-kombu
+celery
+celery[redis]

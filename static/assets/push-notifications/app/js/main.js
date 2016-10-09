@@ -31,9 +31,9 @@ if ('serviceWorker' in navigator) {
   }).then(function(serviceWorkerRegistration) {
     reg = serviceWorkerRegistration;
     subscribeButton.disabled = false;
-    console.log('Service Worker is ready :^)', reg);
+    console.log('Service Worker is ready', reg);
   }).catch(function(error) {
-    console.log('Service Worker Error :^(', error);
+    console.log('Service Worker Error', error);
   });
 }
 
@@ -60,10 +60,10 @@ function subscribe() {
         cache: false,
         statusCode: {
             200: function () {
-                alert('You have been subscribed')
+                console.log('You have been subscribed');
             },
             401: function () {
-                alert('An error occurred downloading');
+                console.log('An error occurred downloading');
             }
         }
     });

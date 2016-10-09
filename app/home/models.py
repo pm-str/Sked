@@ -27,8 +27,12 @@ class Task(models.Model):
     last_request = models.DateField(verbose_name="It's the time of the last query to this task", blank=True)
     color = models.CharField(verbose_name='Color for this task', max_length=7, blank=True)
 
-    def __unicode__(self):
-        return str(self.name)
+    def __str__(self):
+        return self.name
+
+
+class AwaitingDelivery(models.Model):
+    queue = models.ForeignKey(Task, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.name)
+        return self.queue.name
