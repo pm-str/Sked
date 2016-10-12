@@ -20,9 +20,10 @@
           <ul class="dropdown-menu">
             <li>
               {% if request.user %}
-                  <button class="btn btn-block btn-success" id="push" disabled>Subscribe</button><br>
+                  <button class="btn btn-block btn-default" id="push" disabled>Subscribe</button><br>
               {% endif %}
             </li>
+
             {% if request.user.is_superuser %}
               <li>
                 <a href="{% url 'admin:index' %}">Administration</a>

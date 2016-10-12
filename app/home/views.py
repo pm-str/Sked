@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from app.contrib.mixins import AppContextMixin
 from django.views.generic import TemplateView
@@ -28,7 +28,7 @@ def get_events_today(events):
     answer |= objects.filter(repeat='mn').filter(date__day=today.day)
     answer |= objects.filter(repeat='yr').filter(date__month=today.month).filter(date__day=today.day)
 
-    return answer
+    return answer.order_by('time_notice')
 
 
 class GetTask(AppContextMixin, TemplateView):
@@ -46,6 +46,7 @@ class GetTask(AppContextMixin, TemplateView):
             table[i]['length'] = self.diff_times(start, end)
             # For range chart
             table[i]['start_minutes'] = start.hour * 60 + start.minute
+            table[i]['time_now'] = datetime.today().time()
 
         kwargs['table'] = table
         kwargs['number_chart'] = self.request.session.get('chart', 0)

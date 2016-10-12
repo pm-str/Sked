@@ -1,7 +1,7 @@
 {% extends 'base/base_page.html' %}
 
 {% block login %}
-    <div class="col-lg-offset-3 col-lg-4 col-lg-offset-5">
+    <div class="col-lg-offset-4 col-lg-4 col-lg-offset-4">
         <form role="form" action="{% url 'auth:login' %}" method="post">
             {% csrf_token %}
             <h2>Авторизация</h2>

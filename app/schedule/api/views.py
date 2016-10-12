@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from app.home.models import Task
 from datetime import datetime
 
+
 class EventsAPI(APIView):
     http_method_names = ['get']
 

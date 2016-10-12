@@ -22,11 +22,14 @@
           </thead>
           <tbody>
           {% for object in table %}
-            <tr>
+            <tr {% if object.start <= object.time_now and object.end >= object.time_now %}
+                    style="background-color: #bce8f1"
+                {% endif %} >
               <td><strong>{{ forloop.counter }}.</strong></td>
-              <td>{{ object.name }}</td>
+              <td><a style="color: black" href="#" data-toggle="modal"
+                       data-target="#my{{ object.id }}">{{ object.name }}</a></td>
               <td>{{ object.start }}</td>
-              <td><i>{{ object.time_notice }} {{ object.date_notice }}</i></td>
+              <td><i>{{ object.time_notice }} / {{ object.date_notice }}</i></td>
               <td>{{ object.length }} мин.</td>
             </tr>
           {% endfor %}
@@ -39,5 +42,8 @@
         </tbody>
       </table>
     </div>
+  {% for object in table %}
+    {% include 'home/description.html' %}
+  {% endfor %}
     <hr style=" margin-top:30px; height: 2px; color: darkgray; background-color: darkgray; border: none">
 {% endblock %}

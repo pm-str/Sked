@@ -1,7 +1,7 @@
 from django.conf.urls import url
-from .views import CheckCurrentEventAPI
+from .views import CheckCurrentMessageAPI
 
 
 urlpatterns = [
-    url(r'check_current_event', CheckCurrentEventAPI.as_view(), name='CheckCurrentEvent'),
+    url(r'check_current_message', CheckCurrentMessageAPI.as_view(), name='CheckCurrentMessage'),
 ]

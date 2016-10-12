@@ -1,5 +1,6 @@
 # encoding: utf8
 from django.db import models
+from datetime import datetime
 from app.user.models import UserProfile
 
 
@@ -24,15 +25,17 @@ class Task(models.Model):
     date_notice = models.DateField(verbose_name='Date of notification')
     repeat = models.CharField(max_length=10, verbose_name='The retry time of the event', choices=PERIODS,
                               default=PERIODS[0][0])
-    last_request = models.DateField(verbose_name="It's the time of the last query to this task", blank=True)
+    last_request = models.DateField(verbose_name="Last query time", blank=True)
     color = models.CharField(verbose_name='Color for this task', max_length=7, blank=True)
+
+    @property
+    def full_datetime(self):
+        return datetime.combine(self.date, self.start)
+
+    def is_request_today(self):
+        return True if self.last_request == datetime.today().date() else False
+
+    is_request_today.boolean = True
 
     def __str__(self):
         return self.name
-
-
-class AwaitingDelivery(models.Model):
-    queue = models.ForeignKey(Task, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.queue.name

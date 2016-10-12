@@ -22,7 +22,7 @@
 'use strict';
 
 var config = {
-  'api_url': '/home/api/',
+  'api_url': '/push_message/api/',
   'static_url': '/static/assets/push-notifications/app/images/',
   'is_broadcast': true
 };
@@ -46,8 +46,9 @@ event.waitUntil(
     self.registration.pushManager.getSubscription().then(function(subscription) {
         var registration_id = subscription.endpoint.split("/").slice(-1)[0];
         // получаем payload по id устройства
-        fetch(config.api_url + 'data_by_reg_id?registration_id=' + registration_id, {
-          'headers': {'Content-type': 'application/json'}
+        fetch(config.api_url + 'awaiting_delivery?registration_id=' + registration_id, {
+          headers: {'Content-type': 'application/json'},
+          credentials: 'include'
         }).then(function(response) {
           if (response.status !== 200) {
             console.log('Looks like there was a problem. Status Code: ' + response.status);
@@ -60,7 +61,7 @@ event.waitUntil(
             var url = data.url;
             var icon = config.static_url + data.icon;
 
-            return self.registration.showNotification(title, {
+            self.registration.showNotification(title, {
               body: body,
               icon: icon,
               vibrate: [200, 100, 200, 100, 200, 100, 200],
