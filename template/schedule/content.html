@@ -1,5 +1,10 @@
 {% extends 'base/base_page.html' %}
 
 {% block inner %}
+  <div class="col-lg-9 col-md-8 col-sm-12">
     {% block data %}{% endblock %}
+  </div>
+  <div class="col-lg-3 col-md-4 col-sm-12">
+    {% include 'partials/sidebar.html' %}
+  </div>
 {% endblock %}

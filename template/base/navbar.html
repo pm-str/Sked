@@ -34,7 +34,7 @@
             </li>
             <li class="divider"></li>
             <li class="dropdown-header">
-              You are <span style="color:indigo">{% if request.user %}{{ request.user }}{% else %}Anonymous{% endif %}</span>
+              <p>You are <strong>{% if request.user %}{{ request.user }}{% else %}Anonymous{% endif %}</strong></p>
             </li>
             {% if  request.user.is_authenticated %}
               <li>

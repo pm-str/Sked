@@ -10,5 +10,4 @@ class AuthRequiredMiddleware(object):
         if request.path in public_paths:
             return
         else:
-            # return login_required(view_func)(request, *view_args, **view_kwargs)
-            return
+            return login_required(view_func)(request, *view_args, **view_kwargs)

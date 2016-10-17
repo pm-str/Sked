@@ -14,10 +14,13 @@ class AppContextMixin(object):
         try:
             settings = Settings.objects.get(user=UserProfile.objects.get(id=1))
             objects = Word.objects.all()
-            quantity = (now - datetime.combine(now.date(), settings.start_time)).seconds // (settings.range * 60)
-            ind1 = settings.number_word - min(settings.number_word, quantity)
-            ind2 = settings.number_word
-            query = objects[ind1:ind2]
+            past_time = datetime.combine(now.date(), settings.start_time)
+            quantity = (now - past_time).seconds // (settings.range * 60)
+            ind1 = settings.number_word - min(settings.number_word, quantity if now > past_time else -1)
+            # add active at the moment word
+            ind2 = settings.number_word + 1
+            # reverse words and sorting by number of appearance
+            query = reversed(objects[ind1:ind2])
             return query
         except Exception as r:
             print(r)

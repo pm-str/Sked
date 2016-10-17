@@ -7,3 +7,11 @@ body {
    font-size: 16px;
    line-height: 1;
 }
+
+table {
+  width: 100%;
+  border-collapse:separate;
+}
+.input-calendar {
+			width: 100%;
+}

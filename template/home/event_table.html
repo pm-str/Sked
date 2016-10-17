@@ -1,39 +1,40 @@
 {% extends 'home/content.html' %}
 
 {% block event_table %}
-    <div class="page-header">
-      <h1 class="h3">{{ app_header }}</h1>
-    </div>
+  <div class="page-header">
+    <h1 class="h3">{{ app_header }}</h1>
+  </div>
+
+  <div class="table-responsive ">
     <div class="panel panel-default">
       <div class="panel-heading">
         Active events<br/>
         {% block message %}{% endblock %}
       </div>
-      <table class="table table-striped table-hover table-bordered">
+      <table class=" table table-bordered table-striped table-hover">
         {% if table %}
           <thead>
           <tr>
             <th><strong>#</strong></th>
-            <th>Название</th>
-            <th>Время начала</th>
-            <th>Уведомлять</th>
-            <th>Продолжительность</th>
+            <th>Name</th>
+            <th>Start</th>
+            <th>Notice</th>
+            <th>Range</th>
           </tr>
           </thead>
           <tbody>
           {% for object in table %}
             <tr {% if object.start <= object.time_now and object.end >= object.time_now %}
-                    style="background-color: #bce8f1"
-                {% endif %} >
+              style="background-color: #bce8f1"
+            {% endif %} >
               <td><strong>{{ forloop.counter }}.</strong></td>
               <td><a style="color: black" href="#" data-toggle="modal"
-                       data-target="#my{{ object.id }}">{{ object.name }}</a></td>
+                     data-target="#my{{ object.id }}">{{ object.name }}</a></td>
               <td>{{ object.start }}</td>
               <td><i>{{ object.time_notice }} / {{ object.date_notice }}</i></td>
               <td>{{ object.length }} мин.</td>
             </tr>
           {% endfor %}
-
         {% else %}
           <tr>
             <td class="text-center">Empty.</td>
@@ -42,8 +43,9 @@
         </tbody>
       </table>
     </div>
+  </div>
   {% for object in table %}
     {% include 'home/description.html' %}
   {% endfor %}
-    <hr style=" margin-top:30px; height: 2px; color: darkgray; background-color: darkgray; border: none">
+  <hr style=" margin-top:30px; height: 2px; color: darkgray; background-color: darkgray; border: none">
 {% endblock %}

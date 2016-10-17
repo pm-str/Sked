@@ -1,12 +1,24 @@
 from datetime import date, datetime
-
+from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import redirect
 from app.contrib.mixins import AppContextMixin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
 from .models import Task
+from .forms import TaskForm
+from app.user.models import UserProfile
 
 
-class AddEvent(AppContextMixin, TemplateView):
-    pass
+class AddEvent(AppContextMixin, CreateView):
+    model = Task
+    success_url = 'home:add_event'
+    template_name = 'add_event/content.html'
+    form_class = TaskForm
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = UserProfile.objects.get(id=self.request.user.id)
+        self.object.save()
+        return redirect(self.success_url)
 
 
 def get_events_today(events):

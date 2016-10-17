@@ -7,7 +7,7 @@
 <li {% if request.path == calendar %} class="active" {% endif %}>
   <a href="{{ calendar }}">Calendar</a>
 </li>
-{% url '' as events %}
+{% url 'home:add_event' as events %}
 <li {% if request.path == events %} class="active" {% endif %}>
   <a href="{{ events }}">Events</a>
 </li>

@@ -1,0 +1,59 @@
+{% extends 'base/base_page.html' %}
+{% load static %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/datepicker/css/pignose.calendar.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/timepicker/css/wickedpicker.css' %}">
+
+{% endblock %}
+
+{% block inner %}
+  <div class="col-lg-9" xmlns="http://www.w3.org/1999/html">
+    <form class="form-horizontal" method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          <p class="text-muted">{{ field.errors.as_text }}</p>
+          {% if field.help_text %}
+            <p class="text-info">{{ field.help_text|safe }}</p>
+          {% endif %}
+          <p>{{ field.label_tag }} {{ field }}</p>
+        </div>
+      {% endfor %}
+      <br>
+      <button type="submit" class="btn btn-lg btn-primary center-block btn-block">Save</button>
+    </form>
+  </div>
+  <div class="col-lg-3 visible-lg">
+    {% include 'partials/sidebar.html' %}
+  </div>
+{% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  <script src="{% static 'assets/datepicker/js/moment.min.js' %}"></script>
+  <script src="{% static 'assets/datepicker/js/pignose.calendar.min.js' %}"></script>
+  <script src="{% static 'assets/timepicker/js/wickedpicker.js' %}"></script>
+  <script type="text/javascript">
+    $(function () {
+      $('.input-calendar').pignoseCalendar({
+        theme: 'dark',
+      });
+    });
+  </script>
+  <script type="text/javascript">
+    var dt = new Date();
+    var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+    $('.timepicker').wickedpicker({
+      now: time,
+      title: 'My Timepicker',
+      showSeconds: true,
+      twentyFour: true,
+      upArrow: 'wickedpicker__controls__control-up',
+      downArrow: 'wickedpicker__controls__control-down',
+      close: 'wickedpicker__close',
+      hoverState: 'hover-state'
+    });
+  </script>
+{% endblock %}
