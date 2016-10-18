@@ -3,6 +3,7 @@ from app.home.models import Task
 from app.push_message.models import AwaitingDelivery
 from celery import shared_task
 from app.push_message.send import push_message
+from conf.settings import SEP
 
 
 def get_notice_today(events):
@@ -34,7 +35,8 @@ def check_current_event():
     for i in tasks:
         token = i.user.token
         username = i.user.name
-        AwaitingDelivery.objects.create(task=i)
+        for _ in range(len(token.split(SEP))):
+            AwaitingDelivery.objects.create(task=i)
         push_message(username, token)
         i.last_request = date.today()
         i.save()

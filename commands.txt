@@ -1,5 +1,8 @@
-# python manage.py celeryd --verbosity=2 --loglevel=DEBUG
-# python manage.py celerybeat --verbosity=2 --loglevel=DEBUG
+# running celery tasks
+python manage.py celeryd --verbosity=2 --loglevel=DEBUG
+python manage.py celerybeat --verbosity=2 --loglevel=DEBUG
 
-# or python manage.py celery worker -B --concurrency=1
+or python manage.py celery worker -B --concurrency=1
 
+# URL for task beating
+https://pmv.pythonanywhere.com/celery/api/check_current_message

@@ -1,8 +1,8 @@
 from datetime import date, datetime
-from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
 from app.contrib.mixins import AppContextMixin
-from django.views.generic import TemplateView, CreateView
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 from .models import Task
 from .forms import TaskForm
 from app.user.models import UserProfile
@@ -20,9 +20,13 @@ class AddEvent(AppContextMixin, CreateView):
         self.object.save()
         return redirect(self.success_url)
 
+    def get_context_data(self, *args, **kwargs):
+        kwargs = super(AddEvent, self).get_context_data(*args, **kwargs)
+        kwargs['all_events'] = Task.objects.all()
+        return kwargs
 
-def get_events_today(events):
-    today = date.today()
+
+def get_events_today(today, events):
     objects = events.objects.all()
 
     answer = objects.filter(repeat='never').filter(date=today)
@@ -51,7 +55,7 @@ class GetTask(AppContextMixin, TemplateView):
         return minutes
 
     def get_context_data(self, *args, **kwargs):
-        table = get_events_today(Task).values()
+        table = get_events_today(date.today(), Task).values()
         for i in range(len(table)):
             start = table[i]['start']
             end = table[i]['end']
@@ -63,3 +67,24 @@ class GetTask(AppContextMixin, TemplateView):
         kwargs['table'] = table
         kwargs['number_chart'] = self.request.session.get('chart', 0)
         return super(GetTask, self).get_context_data(*args, **kwargs)
+
+
+class ChangeEvent(AppContextMixin, UpdateView):
+    form_class = TaskForm
+    model = Task
+    template_name = 'add_event/content.html'
+    success_url = 'home:add_event'
+
+    def form_valid(self, form):
+        form.save()
+        return redirect(self.success_url)
+
+    def get_context_data(self, *args, **kwargs):
+        kwargs = super(ChangeEvent, self).get_context_data(*args, **kwargs)
+        kwargs['all_events'] = Task.objects.all()
+        return kwargs
+
+
+class DeleteEvent(AppContextMixin, DeleteView):
+    model = Task
+    success_url = reverse_lazy('home:add_event')

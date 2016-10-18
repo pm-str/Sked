@@ -1,0 +1,21 @@
+{% load static %}
+
+<div class="list-group pre-scrollable">
+
+  <table class="table table-striped table-hover">
+    {% for event in all_events %}
+        <tr>
+          <td><a style="color:darkslategray" href="{% url 'home:change_event' event.pk %}">{{ event.name }}</a></td>
+          <form method="post" action="{% url 'home:delete_event' event.pk %}">
+            {% csrf_token %}
+            <td><input type="image" src="{% static 'img/delete.png' %}" width="20px;" alt="Submit Form" /></td>
+          </form>
+        </tr>
+    {% empty %}
+      <p>There are nothing.</p>
+    {% endfor %}
+  </table>
+</div>
+
+
+<!--span class="badge">{{ event.pk }}</--span>-->

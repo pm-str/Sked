@@ -1,22 +1,3 @@
-/*
-*
-*  Push Notifications codelab
-*  Copyright 2015 Google Inc. All rights reserved.
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      https://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License
-*
-*/
-
 'use strict';
 
 var reg;
@@ -24,61 +5,99 @@ var sub;
 var isSubscribed = false;
 var subscribeButton = document.querySelector("[id='push']");
 
-if ('serviceWorker' in navigator) {
-  console.log('Service Worker is supported');
-  navigator.serviceWorker.register('/sw.js').then(function() {
-    return navigator.serviceWorker.ready;
-  }).then(function(serviceWorkerRegistration) {
-    reg = serviceWorkerRegistration;
-    subscribeButton.disabled = false;
-    console.log('Service Worker is ready', reg);
-  }).catch(function(error) {
-    console.log('Service Worker Error', error);
-  });
+function checkSubscribe() {
+    navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
+        serviceWorkerRegistration.pushManager.getSubscription()
+            .then(function (subscription) {
+                // Enable any UI which subscribes / unsubscribes from
+                if (!subscription) {
+                    subscribeButton.textContent = 'Subscribe';
+                    isSubscribed = false;
+                }
+                else {
+                    subscribeButton.textContent = 'Unsubscribe';
+                    isSubscribed = true;
+                }
+            });
+    });
 }
 
-subscribeButton.addEventListener('click', function() {
-  if (isSubscribed) {
-    unsubscribe();
-  } else {
-    subscribe();
-  }
+if ('serviceWorker' in navigator) {
+    console.log('Service Worker is supported');
+    navigator.serviceWorker.register('/sw.js').then(function () {
+        return navigator.serviceWorker.ready;
+    }).then(function (serviceWorkerRegistration) {
+        reg = serviceWorkerRegistration;
+        subscribeButton.disabled = false;
+        console.log('Service Worker is ready', reg);
+    }).catch(function (error) {
+        console.log('Service Worker Error', error);
+    });
+    checkSubscribe();
+}
+
+subscribeButton.addEventListener('click', function () {
+    if (isSubscribed) {
+        unsubscribe();
+    } else {
+        subscribe();
+    }
 });
 
 function subscribe() {
-  reg.pushManager.subscribe({userVisibleOnly: true}).
-  then(function(pushSubscription) {
-    sub = pushSubscription;
-    console.log(sub.endpoint.valueOf());
-    $.ajax({
-        type: "GET",
-        url: "/home/api/push_token",
-        data: {
-            'endpoint': sub.endpoint.valueOf()
-        },
-        dataType: "HTML",
-        cache: false,
-        statusCode: {
-            200: function () {
-                console.log('You have been subscribed');
+    reg.pushManager.subscribe({userVisibleOnly: true}).then(function (pushSubscription) {
+        sub = pushSubscription;
+        console.log(sub.endpoint.valueOf());
+        $.ajax({
+            type: "GET",
+            url: "/home/api/push_token",
+            data: {
+                'endpoint': sub.endpoint.valueOf()
             },
-            401: function () {
-                console.log('An error occurred downloading');
+            dataType: "HTML",
+            cache: false,
+            statusCode: {
+                200: function () {
+                    console.log('You have been subscribed');
+                    checkSubscribe();
+                },
+                401: function () {
+                    console.log('An error occurred downloading');
+                    checkSubscribe();
+                }
             }
-        }
+        });
     });
-    subscribeButton.textContent = 'Unsubscribe';
-    isSubscribed = true;
-  });
 }
 
-function unsubscribe() {
-  sub.unsubscribe().then(function(event) {
-    subscribeButton.textContent = 'Subscribe';
-    console.log('Unsubscribed!', event);
-    isSubscribed = false;
-  }).catch(function(error) {
-    console.log('Error unsubscribing', error);
-    subscribeButton.textContent = 'Subscribe';
-  });
+function unsubscribe(){
+    checkSubscribe();
+    reg.pushManager.subscribe({userVisibleOnly: true}).then(function (pushSubscription) {
+        sub = pushSubscription;
+        sub.unsubscribe().then(function (event) {
+            console.log('Unsubscribed!', event);
+            checkSubscribe();
+        }).catch(function (error) {
+            console.log('Error unsubscribing', error);
+            checkSubscribe();
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/home/api/del_token",
+            data: {
+                'endpoint': sub.endpoint.valueOf()
+            },
+            dataType: "HTML",
+            cache: false,
+            statusCode: {
+                200: function () {
+                    console.log('You have been UnSubscribed');
+                },
+                401: function () {
+                    console.log('An error occurred downloading');
+                }
+            }
+        });
+    });
 }
