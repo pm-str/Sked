@@ -1,9 +1,10 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from calendar import monthrange
+from datetime import datetime, date
+
 from app.home.models import Task
 from app.home.views import get_events_today
-from datetime import datetime, date
-from calendar import monthrange
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class EventsAPI(APIView):
@@ -16,7 +17,7 @@ class EventsAPI(APIView):
 
         for i in range(1, monthrange(today.year, today.month)[1] + 1):
             relative_d = date(today.year, today.month, i)
-            query = get_events_today(relative_d, Task)
+            query = get_events_today(relative_d, Task.objects.all())
             for event in query:
                 events_response.append({
                     'title': event.name,

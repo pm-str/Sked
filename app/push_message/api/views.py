@@ -1,6 +1,6 @@
+from app.push_message.models import AwaitingDelivery
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from app.push_message.models import AwaitingDelivery
 
 
 class AwaitingDeliveryAPI(APIView):
@@ -9,19 +9,17 @@ class AwaitingDeliveryAPI(APIView):
     def get(self, *args, **kwargs):
         token = self.request.GET['registration_id']
         try:
-            task_object = AwaitingDelivery.objects.filter(task__user__token__contains=token)
-            word_object = AwaitingDelivery.objects.filter(word__user__token__contains=token)
+            message = AwaitingDelivery.objects.filter(token=token).first()
             title = body = None
-            if task_object.count():
-                title = task_object.first().task.name
-                body = task_object.first().task.description
-                task_object.first().delete()
 
-            elif word_object.count():
-                title = word_object.first().word.name
-                body = word_object.first().word.description
-                word_object.first().delete()
+            if message.task:
+                title = message.task.name
+                body = message.task.description
+            elif message.word:
+                title = message.word.name
+                body = message.word.description
 
+            message.delete()
             data = {
                 'title': title,
                 'body': body,

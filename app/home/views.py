@@ -1,11 +1,12 @@
 from datetime import date, datetime
-from django.shortcuts import redirect
+
 from app.contrib.mixins import AppContextMixin
-from django.core.urlresolvers import reverse_lazy
-from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
-from .models import Task
-from .forms import TaskForm
 from app.user.models import UserProfile
+from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import redirect
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
+from .forms import TaskForm
+from .models import Task
 
 
 class AddEvent(AppContextMixin, CreateView):
@@ -26,8 +27,7 @@ class AddEvent(AppContextMixin, CreateView):
         return kwargs
 
 
-def get_events_today(today, events):
-    objects = events.objects.all()
+def get_events_today(today, objects):
 
     answer = objects.filter(repeat='never').filter(date=today)
     answer |= objects.filter(repeat='1day')
@@ -44,7 +44,7 @@ def get_events_today(today, events):
     answer |= objects.filter(repeat='mn').filter(date__day=today.day)
     answer |= objects.filter(repeat='yr').filter(date__month=today.month).filter(date__day=today.day)
 
-    return answer.order_by('time_notice')
+    return answer
 
 
 class GetTask(AppContextMixin, TemplateView):
@@ -55,7 +55,7 @@ class GetTask(AppContextMixin, TemplateView):
         return minutes
 
     def get_context_data(self, *args, **kwargs):
-        table = get_events_today(date.today(), Task).values()
+        table = get_events_today(date.today(), Task.objects.all()).order_by('time_notice').values()
         for i in range(len(table)):
             start = table[i]['start']
             end = table[i]['end']

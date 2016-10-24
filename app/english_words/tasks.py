@@ -1,9 +1,10 @@
-from .models import Settings, Word
-from app.push_message.send import push_message
-from app.push_message.models import AwaitingDelivery
 from datetime import datetime
+
+from app.push_message.functions import push_message
+from app.push_message.models import AwaitingDelivery
 from celery import shared_task
 from conf.settings import SEP
+from .models import Settings, Word
 
 
 # converting to the datetime format
@@ -26,8 +27,6 @@ def check_current_word():
             i.number_word += 1
             i.save()
             number_word = min(Word.objects.count(), i.number_word)
-            for _ in range(len(token.split(SEP))):
-                AwaitingDelivery.objects.create(word=Word.objects.all()[number_word])
-            push_message(username, token)
-
-
+            for one_token in token.split(SEP):
+                a = AwaitingDelivery.objects.create(word=Word.objects.all()[number_word], token=one_token)
+                push_message(username, one_token, a.pk)

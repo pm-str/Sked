@@ -1,11 +1,13 @@
-from urllib import request
+import sys
 from datetime import datetime
 from time import sleep
-import sys
+from urllib import request
 
 url = sys.argv[1]
 print("url: {}\ndatetime now: {}\n".format(url, datetime.today().isoformat(sep=' ')[:19]))
+counter = 0
 while True:
+    counter += 10
     try:
         with request.urlopen(url, timeout=5) as f:
             print("status code: {}\ndatetime now: {}\n".format(f.getcode(), datetime.today().isoformat(sep=' ')[:19]))
