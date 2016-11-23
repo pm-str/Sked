@@ -9,7 +9,7 @@ class AwaitingDeliveryAPI(APIView):
     def get(self, *args, **kwargs):
         token = self.request.GET['registration_id']
         try:
-            message = AwaitingDelivery.objects.filter(token=token).first()
+            message = AwaitingDelivery.objects.filter(token=token).order_by('datetime').last()
             title = body = None
 
             if message.task:

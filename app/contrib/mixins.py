@@ -1,9 +1,9 @@
 # coding: utf-8
+from datetime import datetime
+
+from app.english_words.models import Word
 from django.contrib import messages
 from django.utils import timezone
-from app.user.models import UserProfile
-from app.english_words.models import Settings, Word
-from datetime import datetime
 
 
 class AppContextMixin(object):
@@ -12,16 +12,8 @@ class AppContextMixin(object):
     def current_words(self):
         now = datetime.today()
         try:
-            settings = Settings.objects.get(user=UserProfile.objects.get(id=1))
-            objects = Word.objects.all()
-            past_time = datetime.combine(now.date(), settings.start_time)
-            quantity = (now - past_time).seconds // (settings.range * 60)
-            ind1 = settings.number_word - min(settings.number_word, quantity if now > past_time else -1)
-            # add active at the moment word
-            ind2 = settings.number_word + 1
-            # reverse words and sorting by number of appearance
-            query = reversed(objects[ind1:ind2])
-            return query
+            objects = Word.objects.filter(last_request__date=now.date()).order_by('last_request')
+            return objects
         except Exception as r:
             print(r)
             return ''

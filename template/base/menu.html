@@ -3,11 +3,11 @@
 <li {% if request.path == home_url or request.path == default %} class="active" {% endif %}>
   <a href="{{ home_url }}">Current</a>
 </li>
-{% url 'schedule:calendar' as calendar %}
-<li {% if request.path == calendar %} class="active" {% endif %}>
-  <a href="{{ calendar }}">Calendar</a>
-</li>
 {% url 'home:add_event' as events %}
 <li {% if request.path == events %} class="active" {% endif %}>
   <a href="{{ events }}">Events</a>
+</li>
+{% url 'schedule:calendar' as calendar %}
+<li {% if request.path == calendar %} class="active" {% endif %}>
+  <a href="{{ calendar }}">Calendar</a>
 </li>

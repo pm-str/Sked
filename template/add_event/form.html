@@ -2,13 +2,36 @@
   {% csrf_token %}
   {% for field in form %}
     <div>
-      <p class="text-muted">{{ field.errors.as_text }}</p>
-      {% if field.help_text %}
-        <p class="text-info">{{ field.help_text|safe }}</p>
+      {% if forloop.counter <= 2 %}
+        <p class="text-muted">{{ field.errors.as_text }}</p>
+        {% if field.help_text %}
+          <p class="text-info">{{ field.help_text|safe }}</p>
+        {% endif %}
+        <p>{{ field.label_tag }} {{ field }}</p>
       {% endif %}
-      <p>{{ field.label_tag }} {{ field }}</p>
     </div>
   {% endfor %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#collapse-group" href="#el1">Options</a>
+      </h4>
+    </div>
+    <div id="el1" class="panel-collapse collapse">
+      <div class="panel-body">
+        {% for field in form %}
+          {% if forloop.counter > 2 %}
+            <p class="text-muted">{{ field.errors.as_text }}</p>
+            {% if field.help_text %}
+              <p class="text-info">{{ field.help_text|safe }}</p>
+            {% endif %}
+            <p>{{ field.label_tag }} {{ field }}</p>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
   <br>
   <button type="submit" class="btn btn-lg btn-primary center-block btn-block">Save</button>
 </form>
+

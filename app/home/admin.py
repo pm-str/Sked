@@ -5,7 +5,7 @@ from .models import Task
 class TaskAdmin(admin.ModelAdmin):
     fields = (
         'user', 'name', 'description', ('start', 'end'), 'date',
-        'repeat', ('time_notice', 'date_notice'), 'color', 'last_request'
+        'repeat', ('time_notice', 'date_notice'), 'color', 'last_request', 'notice'
     )
 
     def task_name(self, obj):

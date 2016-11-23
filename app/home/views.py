@@ -64,7 +64,8 @@ class GetTask(AppContextMixin, TemplateView):
             table[i]['start_minutes'] = start.hour * 60 + start.minute
             table[i]['time_now'] = datetime.today().time()
 
-        kwargs['table'] = table
+        kwargs['tasks'] = table
+        kwargs['notices'] = Task.objects.filter(notice=True)
         kwargs['number_chart'] = self.request.session.get('chart', 0)
         return super(GetTask, self).get_context_data(*args, **kwargs)
 

@@ -18,10 +18,11 @@
         <div class="btn-group">
           <a data-v="0" class="btn btn-success {% if number_chart == '0' %}active{% endif %}">Pie</a>
           <a data-v="1" class="btn btn-primary {% if number_chart == '1'%}active{% endif %}">Range</a>
+          <a data-v="-1" class="btn btn-info {% if number_chart == '-1' %}active{% endif %}">None</a>
       </div>
       {% if number_chart == '0'%}
         {% include 'home/pie_chart.html' %}
-      {% else %}
+      {% elif number_chart == '1' %}
         {% include 'home/range_chart.html' %}
       {% endif %}
       </div>

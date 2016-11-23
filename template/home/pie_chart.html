@@ -20,7 +20,7 @@
       "type": "pie",
       "theme": "light",
       "dataProvider": [
-        {% for object in table %}
+        {% for object in tasks %}
           {
             "task": "{{ object.name }}",
             "length": {{ object.length }}

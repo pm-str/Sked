@@ -27,6 +27,9 @@ def check_current_word():
             i.number_word += 1
             i.save()
             number_word = min(Word.objects.count(), i.number_word)
+            word = Word.objects.all()[number_word]
+            word.last_request = now
+            word.save()
             for one_token in token.split(SEP):
-                a = AwaitingDelivery.objects.create(word=Word.objects.all()[number_word], token=one_token)
+                a = AwaitingDelivery.objects.create(word=word, token=one_token)
                 push_message(username, one_token, a.pk)
