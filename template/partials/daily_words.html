@@ -1,6 +1,4 @@
-<div class="page-header">
-  <h1 class="h3">Daily english</h1>
-</div>
+
 {% for word in current_words %}
   <blockquote>
     <div><h3 class="text-success">{{ word.name }}</h3></div>
@@ -8,6 +6,6 @@
   </blockquote>
 {% empty %}
   <blockquote>
-    <div><h3 class="text-success">New words don't exist</h3></div>
+    <div><p class="text-center text-info lead">No new words.</p></div>
   </blockquote>
 {% endfor %}

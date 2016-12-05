@@ -1,9 +1,6 @@
 {% extends 'home/content.html' %}
 
 {% block event_table %}
-  <div class="page-header">
-    <h1 class="h3">{{ app_header }}</h1>
-  </div>
   <ul class="nav nav-tabs" id="myTab">
     <li class="active"><a href="#tasks" data-toggle="tab">Tasks</a></li>
     <li><a href="#notices" data-toggle="tab">Notices</a></li>
@@ -16,7 +13,7 @@
           {% block message %}{% endblock %}
         </div>
         <div class="table-responsive">
-          <table class=" table table-bordered table-hover">
+          <table class=" table table-bordered table-hover table-striped">
             {% if tasks %}
               <thead>
               <tr>
@@ -49,15 +46,29 @@
           </table>
         </div>
       </div>
+      <div class="visible-md visible-lg">
+        <div class="text-center">
+          <div class="btn-group">
+            <a data-v="0" class="btn btn-default {% if number_chart == '0' %}active{% endif %}">Pie</a>
+            <a data-v="1" class="btn btn-primary {% if number_chart == '1' %}active{% endif %}">Range</a>
+            <a data-v="-1" class="btn btn-danger {% if number_chart == '-1' %}active{% endif %}">None</a>
+          </div>
+          {% if number_chart == '0' %}
+            {% include 'home/pie_chart.html' %}
+          {% elif number_chart == '1' %}
+            {% include 'home/range_chart.html' %}
+          {% endif %}
+        </div>
+      </div>
     </div>
     <div class="tab-pane fade" id="notices">
       {% for notice in notices %}
         <div class="well well-sm">
-          <p class="lead">{{ notice.name }}</p>
+          <p><b>{{ notice.name }}</b></p>
           <p>{{ notice.description }}</p>
         </div>
       {% empty %}
-        <p class="text-center">Empty.</p>
+        <p class="text-center lead text-info">Empty.</p>
       {% endfor %}
     </div>
   </div>

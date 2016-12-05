@@ -15,18 +15,19 @@ class EventsAPI(APIView):
         today = date.today()
         events_response = []
 
-        for i in range(1, monthrange(today.year, today.month)[1] + 1):
-            relative_d = date(today.year, today.month, i)
-            query = get_events_today(relative_d, Task.objects.all())
-            for event in query:
-                events_response.append({
-                    'title': event.name,
-                    'start': datetime.combine(relative_d, event.start).isoformat()[:19],
-                    'end': datetime.combine(relative_d, event.end).isoformat()[:19],
+        for month in range(max(today.month - 1, 1), min(today.month + 1, 12) + 1):
+            for day in range(1, monthrange(today.year, month)[1] + 1):
+                relative_d = date(today.year, month, day)
+                query = get_events_today(relative_d, Task.objects.all())
+                for event in query:
+                    events_response.append({
+                        'title': event.name,
+                        'start': datetime.combine(relative_d, event.start).isoformat()[:19],
+                        'end': datetime.combine(relative_d, event.end).isoformat()[:19],
 
-                    # it does not work for some reason
-                    'color': 'brawn',
-                    'textColor': 'white'
-                })
+                        # it does not work for some reason
+                        'color': 'brawn',
+                        'textColor': 'white'
+                    })
         return Response(events_response)
 

@@ -12,7 +12,7 @@ class AppContextMixin(object):
     def current_words(self):
         now = datetime.today()
         try:
-            objects = Word.objects.filter(last_request__date=now.date()).order_by('last_request')
+            objects = Word.objects.filter(last_request__date=now.date()).order_by('-last_request')
             return objects
         except Exception as r:
             print(r)

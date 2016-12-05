@@ -3,10 +3,23 @@ from datetime import date, datetime
 from app.contrib.mixins import AppContextMixin
 from app.user.models import UserProfile
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import redirect, HttpResponse, render
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 from .forms import TaskForm
 from .models import Task
+
+
+@csrf_protect
+def search(request):
+    if request.is_ajax():
+        words = request.POST.get("search_text")
+        print(words)
+        objects = Task.objects.filter(name__icontains=words)
+        objects |= Task.objects.filter(description__icontains=words)
+        return render(request, 'add_event/objects.html', {'all_events': objects})
+    else:
+        return HttpResponse("Forbidden")
 
 
 class AddEvent(AppContextMixin, CreateView):
@@ -28,7 +41,7 @@ class AddEvent(AppContextMixin, CreateView):
 
 
 def get_events_today(today, objects):
-
+    objects = objects.filter(notice=False)
     answer = objects.filter(repeat='never').filter(date=today)
     answer |= objects.filter(repeat='1day')
 
@@ -55,8 +68,10 @@ class GetTask(AppContextMixin, TemplateView):
         return minutes
 
     def get_context_data(self, *args, **kwargs):
-        table = get_events_today(date.today(), Task.objects.all()).order_by('time_notice').values()
+        table = get_events_today(date.today(), Task.objects.filter(user__user_id=self.request.user.id)).order_by(
+            'time_notice').values()
         for i in range(len(table)):
+            print(table[i])
             start = table[i]['start']
             end = table[i]['end']
             table[i]['length'] = self.diff_times(start, end)

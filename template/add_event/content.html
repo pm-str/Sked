@@ -11,9 +11,12 @@
 {% block inner %}
   <div class="col-lg-9">
     {% include 'add_event/form.html' %}
-  </div><br>
+    <br>
+  </div>
   <div class="col-lg-3">
-    {% include 'add_event/objects.html' %}
+    <p><input class="form-control" type="text" id="search" name="search" placeholder="Search"/></p>
+    <div id="search-results">
+      {% include 'add_event/objects.html' %}</div>
   </div>
 {% endblock %}
 
@@ -24,8 +27,32 @@
   <script src="{% static 'assets/maskedinput/jquery.maskedinput.min.js' %}"></script>
   <script type="text/javascript">
     $(function () {
+      $('#search').on('keyup', function () {
+        var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+        console.log(csrftoken)
+        $.ajax({
+          type: "POST",
+          url: "/home/search",
+          data: {
+            'search_text': $('#search').val(),
+            'csrfmiddlewaretoken': csrftoken
+          },
+          success: searchSuccess,
+          error: function () {
+            //alert('Smth goes wrong')
+          }
+        });
+      });
+    });
+
+    function searchSuccess(data, textStatus, jqXHR) {
+      $('#search-results').html(data)
+    }
+  </script>
+  <script type="text/javascript">
+    $(function () {
       $('.input-calendar').pignoseCalendar({
-        theme: 'dark',
+        theme: 'dark'
       });
     });
   </script>

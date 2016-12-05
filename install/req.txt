@@ -7,3 +7,5 @@ django-celery
 django-kombu
 celery
 celery[redis]
+gunicorn 
+psycopg2

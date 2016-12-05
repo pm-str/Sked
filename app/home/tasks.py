@@ -11,7 +11,7 @@ def get_events_today():
     date = datetime.today().date()
     time = datetime.today().time()
 
-    objects = Task.objects.exclude(last_request=date)
+    objects = Task.objects.exclude(last_request=date).exclude(notice=True)
     answer = objects.filter(repeat='never').filter(date_notice=date)
     answer |= objects.filter(repeat='1day')
 
