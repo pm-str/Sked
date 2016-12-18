@@ -29,7 +29,6 @@
     $(function () {
       $('#search').on('keyup', function () {
         var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
-        console.log(csrftoken)
         $.ajax({
           type: "POST",
           url: "/home/search",

@@ -1,7 +1,7 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from app.user.models import UserProfile
 from conf.settings import SEP
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class ChartNumAPI(APIView):
@@ -9,7 +9,7 @@ class ChartNumAPI(APIView):
 
     def get(self, *args, **kwargs):
         try:
-            self.request.session['chart'] = self.request.GET.get('number', 0)
+            self.request.session['chart'] = self.request.GET.get('number', '0')
         except:
             return Response({}, status=401)
         return Response({}, status=200)

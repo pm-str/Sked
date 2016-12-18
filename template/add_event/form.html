@@ -3,7 +3,6 @@
   {% for field in form %}
     <div>
       {% if forloop.counter <= 2 %}
-
         {% if field.errors %}
           <p class="text-muted">{{ field.errors.as_text }}</p>
         {% endif %}
@@ -14,28 +13,37 @@
       {% endif %}
     </div>
   {% endfor %}
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#collapse-group" href="#el1">Options</a>
-      </h4>
-    </div>
+  <label><input type="checkbox" data-toggle="collapse" data-parent="#collapse-group" href="#el1"> Periodic task</label>
     <div id="el1" class="panel-collapse collapse">
-      <div class="panel-body">
-        {% for field in form %}
-          {% if forloop.counter > 2 %}
-            {% if field.errors %}
-              <p class="text-muted">{{ field.errors.as_text }}</p>
-            {% endif %}
-            {% if field.help_text %}
-              <p class="text-info">{{ field.help_text|safe }}</p>
-            {% endif %}
-            <p>{{ field }}</p>
-          {% endif %}
-        {% endfor %}
+      <div class="form-group">
+        <p class="text-muted">{{ form.date.errors.as_text }}</p>
+        <p>{{ form.date }}</p>
       </div>
-    </div>
-  </div>
-  <button type="submit" class="btn btn-lg btn-primary center-block btn-block">Save</button>
+      <div class="form-group">
+        <p class="text-muted">{{ form.start.errors.as_text }}</p>
+        <p>{{ form.start }}</p>
+      </div>
+      <div class="form-group">
+        <p class="text-muted">{{ form.end.errors.as_text }}</p>
+        <p>{{ form.end }}</p>
+      </div>
+      <div class="form-group">
+        <p class="text-muted">{{ form.time_notice.errors.as_text }}</p>
+        <p>{{ form.time_notice }}</p>
+      </div>
+      <div class="form-group">
+        <p class="text-muted">{{ form.date_notice.errors.as_text }}</p>
+        <p>{{ form.date_notice }}</p>
+      </div>
+      <div class="form-group">
+        <p class="text-muted">{{ form.repeat.errors.as_text }}</p>
+        <p>{{ form.repeat }}</p>
+      </div>
+      <div class="form-group">
+        <p class="text-muted">{{ form.color.errors.as_text }}</p>
+        <p>{{ form.color }}</p>
+      </div>
+      </div>
+  <button style="margin-top: 7px;" type="submit" class="btn btn-lg btn-primary center-block btn-block">Save</button>
 </form>
 

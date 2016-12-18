@@ -26,7 +26,13 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        <form method="post" action="{% url 'home:delete_event' object.id %}">
+          {% csrf_token %}
+          <button style="margin-right: 5px;" type="submit" class="btn btn-danger pull-left">Delete</button>
+        </form>
+        <a href="{% url 'home:change_event' object.id %}?next={% url 'home:current' %}/?tab=tasks"
+           class="btn btn-warning pull-left">Change</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

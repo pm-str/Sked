@@ -13,10 +13,10 @@ def push_message(username, token, pk):
         gcm.plaintext_request(registration_id=token, data={}, collapse_key='new', time_to_live=TIME_TO_LIVE)
     except Exception as r:
         # delete task from queue
-        AwaitingDelivery.objects.get(pk=pk).delete()
+        AwaitingDelivery.objects.filter(pk=pk)[0].delete()
         print('Exception was occurred: ', r)
     else:
-        print('Message was sent to {}'.format(username))
+        print('Message was sent to {}'.format(username.encode('utf-8')))
 
 
 def clear_queue():

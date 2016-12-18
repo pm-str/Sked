@@ -2,7 +2,6 @@ from datetime import date, datetime
 
 from app.contrib.mixins import AppContextMixin
 from app.user.models import UserProfile
-from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect, HttpResponse, render
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
@@ -13,8 +12,8 @@ from .models import Task
 @csrf_protect
 def search(request):
     if request.is_ajax():
-        words = request.POST.get("search_text")
-        print(words)
+        words = request.POST.get("search_text").encode('utf-8')
+        # print(words)
         objects = Task.objects.filter(name__icontains=words)
         objects |= Task.objects.filter(description__icontains=words)
         return render(request, 'add_event/objects.html', {'all_events': objects})
@@ -71,7 +70,7 @@ class GetTask(AppContextMixin, TemplateView):
         table = get_events_today(date.today(), Task.objects.filter(user__user_id=self.request.user.id)).order_by(
             'time_notice').values()
         for i in range(len(table)):
-            print(table[i])
+            # print(table[i])
             start = table[i]['start']
             end = table[i]['end']
             table[i]['length'] = self.diff_times(start, end)
@@ -81,7 +80,8 @@ class GetTask(AppContextMixin, TemplateView):
 
         kwargs['tasks'] = table
         kwargs['notices'] = Task.objects.filter(notice=True)
-        kwargs['number_chart'] = self.request.session.get('chart', 0)
+        kwargs['number_chart'] = self.request.session.get('chart', '0')
+        kwargs['tab'] = self.request.GET.get('tab')
         return super(GetTask, self).get_context_data(*args, **kwargs)
 
 
@@ -89,11 +89,16 @@ class ChangeEvent(AppContextMixin, UpdateView):
     form_class = TaskForm
     model = Task
     template_name = 'add_event/content.html'
-    success_url = 'home:add_event'
+
+    def get_success_url(self):
+        if self.request.GET.get('next'):
+            return self.request.GET.get('next')
+        else:
+            return 'home:add_event'
 
     def form_valid(self, form):
         form.save()
-        return redirect(self.success_url)
+        return redirect(self.get_success_url())
 
     def get_context_data(self, *args, **kwargs):
         kwargs = super(ChangeEvent, self).get_context_data(*args, **kwargs)
@@ -103,4 +108,6 @@ class ChangeEvent(AppContextMixin, UpdateView):
 
 class DeleteEvent(AppContextMixin, DeleteView):
     model = Task
-    success_url = reverse_lazy('home:add_event')
+
+    def get_success_url(self):
+        return self.request.META.get('HTTP_REFERER')
