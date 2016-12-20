@@ -7,15 +7,10 @@ from conf.settings import SEP
 from .models import Settings, Word
 
 
-# converting to the datetime format
-# thus we will able to subtract times
-def dt(time):
-    return datetime.combine(datetime.today().date(), time)
-
-
-@shared_task()
+# @shared_task()
 def check_current_word():
     print("********** Check current word ***********")
+    dt = lambda x: datetime.combine(datetime.today().date(), x)
 
     objects = Settings.objects.all()
     for i in objects:

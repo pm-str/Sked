@@ -31,7 +31,7 @@ def get_events_today():
     return answer
 
 
-@shared_task()
+# @shared_task()
 def check_current_event():
     date = datetime.today()
 

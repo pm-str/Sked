@@ -20,4 +20,5 @@ def push_message(username, token, pk):
 
 
 def clear_queue():
-    AwaitingDelivery.objects.filter(datetime__lte=datetime.now() - timedelta(seconds=TIME_TO_LIVE)).delete()
+    AwaitingDelivery.objects.all().delete()
+

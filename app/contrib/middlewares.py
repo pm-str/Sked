@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.contrib.auth.decorators import login_required
 
-public_paths = {'/auth/login', '/celery/api/check_current_message'}
+public_paths = {'/auth/login', '/celery_tasks/api/check_current_message'}
 
 
 class AuthRequiredMiddleware(object):
