@@ -1,5 +1,8 @@
-from app.contrib.mixins import AppContextMixin
 from django.views.generic import TemplateView
+
+from app.contrib.mixins import AppContextMixin
+
+
 # Create your views here.
 
 

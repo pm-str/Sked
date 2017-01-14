@@ -11,3 +11,7 @@
 <li {% if request.path == calendar %} class="active" {% endif %}>
   <a href="{{ calendar }}">Calendar</a>
 </li>
+{% url 'english_words:dictionary' as dictionary %}
+<li {% if request.path == dictionary %} class="active" {% endif %}>
+  <a href="{{ dictionary }}">Dictionary</a>
+</li>

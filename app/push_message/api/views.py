@@ -1,6 +1,7 @@
-from app.push_message.models import AwaitingDelivery
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from app.push_message.models import AwaitingDelivery
 
 
 class AwaitingDeliveryAPI(APIView):
@@ -17,7 +18,7 @@ class AwaitingDeliveryAPI(APIView):
                 body = message.task.description
             elif message.word:
                 title = message.word.name
-                body = message.word.description
+                body = message.word.translation
 
             message.delete()
             data = {

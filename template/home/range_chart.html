@@ -46,7 +46,7 @@
       "dataProvider": [
         {% for object in tasks %}
           {
-            "category": "{{ object.name }}",
+              "category": "#{{ forloop.counter }}",
             "segments": [{
               "start": {{ object.start_minutes }},
               "duration": {{ object.length  }},

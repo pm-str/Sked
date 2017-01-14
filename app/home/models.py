@@ -1,8 +1,9 @@
 # encoding: utf8
 from datetime import datetime
 
-from app.user.models import UserProfile
 from django.db import models
+
+from app.user.models import UserProfile
 
 PERIODS = [
     ('never', 'Never'),
@@ -48,6 +49,8 @@ class Task(models.Model):
     def clean(self):
         if None in (self.date, self.start, self.end, self.time_notice, self.date_notice):
             self.notice = True
+        else:
+            self.notice = False
         return
 
     def __str__(self):

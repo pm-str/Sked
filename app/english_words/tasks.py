@@ -2,13 +2,11 @@ from datetime import datetime
 
 from app.push_message.functions import push_message
 from app.push_message.models import AwaitingDelivery
-from celery import shared_task
 from conf.settings import SEP
-from .models import Settings, Word
 
 
-# @shared_task()
 def check_current_word():
+    from .models import Settings, Word
     print("********** Check current word ***********")
     dt = lambda x: datetime.combine(datetime.today().date(), x)
 
@@ -22,7 +20,7 @@ def check_current_word():
             i.number_word += 1
             i.save()
             number_word = min(Word.objects.count(), i.number_word)
-            word = Word.objects.all()[number_word]
+            word = Word.objects.all().order_by('id')[number_word]
             word.last_request = now
             word.save()
             for one_token in token.split(SEP):

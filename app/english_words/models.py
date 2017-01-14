@@ -1,12 +1,16 @@
-from app.user.models import UserProfile
 from django.db import models
+
+from app.user.models import UserProfile
 
 
 class Word(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(verbose_name='Word', max_length=128)
-    description = models.TextField(verbose_name='Description', max_length=2000)
-    last_request = models.DateTimeField(verbose_name='Last request', blank=True)
+    transcription = models.CharField(verbose_name='Transcription', max_length=128, blank=True)
+    translation = models.TextField(verbose_name='Translation', max_length=1000)
+    example = models.TextField(verbose_name='Example', max_length=1000, blank=True)
+    last_request = models.DateTimeField(auto_now_add=True, verbose_name='Last request', blank=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name

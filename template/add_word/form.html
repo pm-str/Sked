@@ -1,0 +1,15 @@
+<form method="post">
+  {% csrf_token %}
+  {% for field in form %}
+    <div>
+      {% if field.errors %}
+        <p class="text-muted">{{ field.errors.as_text }}</p>
+      {% endif %}
+      {% if field.help_text %}
+        <p class="text-info">{{ field.help_text|safe }}</p>
+      {% endif %}
+      <p>{{ field }}</p>
+    </div>
+  {% endfor %}
+  <button style="margin-top: 9px;" type="submit" class="btn btn-md btn-default center-block btn-block">Save</button>
+</form>

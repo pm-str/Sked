@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="whole-table list-group">
+  <table class="table table-striped table-hover">
+    {% for word in part_of_words %}
+      <tr>
+        <td><a style="color:darkslategray" href="{% url 'english_words:change_word' word.pk %}">{{ word.name }}</a></td>
+        <td><a style="color:black" href="{% url 'english_words:change_word' word.pk %}">{{ word.translation }}</a></td>
+        <td>
+          <form method="post" action="{% url 'english_words:delete_word' word.pk %}">
+            {% csrf_token %}
+            <input type="image" src="{% static 'img/delete.png' %}" align="right" width="20px;" alt="Submit Form"/>
+          </form>
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td style="color:darkslategray">There are nothing.</td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<style>
+  .whole-table {
+    overflow-y: auto;
+    height: auto;
+    max-height: 440px;
+    border: 2px solid antiquewhite;
+  }
+</style>

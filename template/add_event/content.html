@@ -4,8 +4,6 @@
 {% block css %}
   {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static 'assets/datepicker/css/pignose.calendar.css' %}">
-
-
 {% endblock %}
 
 {% block inner %}
@@ -14,9 +12,13 @@
     <br>
   </div>
   <div class="col-lg-3">
-    <p><input class="form-control" type="text" id="search" name="search" placeholder="Search"/></p>
+    <div class="form-group has-feedback">
+      <input class="form-control" type="text" id="search" name="search" placeholder="Search"/>
+      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+    </div>
     <div id="search-results">
-      {% include 'add_event/objects.html' %}</div>
+      {% include 'add_event/objects.html' %}
+    </div>
   </div>
 {% endblock %}
 
@@ -51,7 +53,8 @@
   <script type="text/javascript">
     $(function () {
       $('.input-calendar').pignoseCalendar({
-        theme: 'dark'
+          theme: 'dark',
+          format: 'DD.MM.YYYY'
       });
     });
   </script>

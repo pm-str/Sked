@@ -1,8 +1,11 @@
 
 {% for word in current_words %}
   <blockquote>
-    <div><h3 class="text-success">{{ word.name }}</h3></div>
-    <p>{{ word.description|linebreaksbr  }}</p>
+    <p style="font-size: 20px;" class="text-success">{{ word.name }}</p>
+    <p style="color: black">{{ word.transcription|linebreaksbr }}</p>
+    <p>{{ word.translation|linebreaksbr }}</p>
+    <p>{{ word.example|linebreaksbr }} </p>
+
   </blockquote>
 {% empty %}
   <blockquote>

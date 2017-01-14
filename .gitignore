@@ -70,3 +70,7 @@ db.sqlite3
 #media and static files
 www
 media
+
+# celery
+celerybeat.pid
+celerybeat-schedule

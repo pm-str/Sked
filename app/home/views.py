@@ -1,10 +1,12 @@
 from datetime import date, datetime
 
-from app.contrib.mixins import AppContextMixin
-from app.user.models import UserProfile
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, HttpResponse, render
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
+
+from app.contrib.mixins import AppContextMixin
+from app.user.models import UserProfile
 from .forms import TaskForm
 from .models import Task
 
@@ -67,7 +69,12 @@ class GetTask(AppContextMixin, TemplateView):
         return minutes
 
     def get_context_data(self, *args, **kwargs):
-        table = get_events_today(date.today(), Task.objects.filter(user__user_id=self.request.user.id)).order_by(
+        required_date = self.request.GET.get('date')
+        if required_date:
+            required_date = datetime.strptime(required_date, '%d.%m.%Y')
+        else:
+            required_date = date.today()
+        table = get_events_today(required_date, Task.objects.filter(user__user_id=self.request.user.id)).order_by(
             'time_notice').values()
         for i in range(len(table)):
             # print(table[i])
@@ -81,6 +88,7 @@ class GetTask(AppContextMixin, TemplateView):
         kwargs['tasks'] = table
         kwargs['notices'] = Task.objects.filter(notice=True)
         kwargs['number_chart'] = self.request.session.get('chart', '0')
+        kwargs['required_date'] = date.strftime(required_date, '%d.%m.%Y')
         kwargs['tab'] = self.request.GET.get('tab')
         return super(GetTask, self).get_context_data(*args, **kwargs)
 
@@ -100,6 +108,13 @@ class ChangeEvent(AppContextMixin, UpdateView):
         form.save()
         return redirect(self.get_success_url())
 
+    def get_object(self, queryset=None):
+        try:
+            instance = Task.objects.get(pk=self.kwargs['pk'])
+        except ObjectDoesNotExist:
+            return None
+        return instance
+
     def get_context_data(self, *args, **kwargs):
         kwargs = super(ChangeEvent, self).get_context_data(*args, **kwargs)
         kwargs['all_events'] = Task.objects.all()
@@ -110,4 +125,9 @@ class DeleteEvent(AppContextMixin, DeleteView):
     model = Task
 
     def get_success_url(self):
-        return self.request.META.get('HTTP_REFERER')
+        url = self.request.META.get('HTTP_REFERER')
+        return url
+
+
+def redirect_to_home(request):
+    return redirect('home:current')

@@ -1,0 +1,47 @@
+{% extends 'base/base_page.html' %}
+
+{% block css %}
+  {{ block.super }}
+{% endblock %}
+
+{% block inner %}
+  <div class="col-lg-9">
+    <div class="form-group has-feedback">
+      <input class="form-control" type="text" id="search" name="search" placeholder="Search"/>
+      <i class="glyphicon glyphicon-search form-control-feedback"></i>
+    </div>
+    <div id="search-results">
+      {% include 'add_word/list_words.html' %}
+    </div>
+  </div>
+  <div class="col-lg-3">
+    {% include 'add_word/form.html' %}
+  </div>
+{% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  <script type="text/javascript">
+      $(function () {
+          $('#search').on('keyup', function () {
+              var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+              $.ajax({
+                  type: "POST",
+                  url: "/english_words/search",
+                  data: {
+                      'search_text': $('#search').val(),
+                      'csrfmiddlewaretoken': csrftoken
+                  },
+                  success: searchSuccess,
+                  error: function () {
+                      //alert('Smth goes wrong')
+                  }
+              });
+          });
+      });
+
+      function searchSuccess(data, textStatus, jqXHR) {
+          $('#search-results').html(data)
+      }
+  </script>
+{% endblock %}

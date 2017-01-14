@@ -1,5 +1,5 @@
 {% load static %}
-<div class="list-group pre-scrollable fa-border">
+<div class="list-group pre-scrollable whole-table">
   <table class="table table-striped table-hover">
     {% for event in all_events %}
         <tr>
@@ -18,3 +18,12 @@
     {% endfor %}
   </table>
 </div>
+
+<style>
+  .whole-table {
+    overflow-y: auto;
+    height: auto;
+    max-height: 440px;
+    border: 2px solid antiquewhite;
+  }
+</style>

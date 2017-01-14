@@ -1,8 +1,6 @@
 from django import forms
+
 from .models import Task
-
-
-FORM_ATTRS = {'class': 'form-control'}
 
 
 class TaskForm(forms.ModelForm):
@@ -18,6 +16,6 @@ class TaskForm(forms.ModelForm):
             'time_notice': forms.TimeInput(attrs={'class': 'form-control time', 'placeholder': 'Time notice'}),
             'date_notice': forms.DateInput(
                 attrs={'class': 'input-calendar form-control', 'placeholder': 'Date notice'}),
-            'repeat': forms.Select(attrs=FORM_ATTRS),
-            'color': forms.Select(attrs=FORM_ATTRS)
+            'repeat': forms.Select(attrs={'class': 'form-control'}),
+            'color': forms.Select(attrs={'class': 'form-control'})
         }

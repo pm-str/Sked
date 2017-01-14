@@ -5,8 +5,8 @@ $(document).ready(function () {
             url: '/schedule/api/get_events',
             type: 'GET',
             error: function () {
-                alert('О нет! Что-то пошло не так!Сообщи об этом админу - pavl.mikhail@ya.ru');
-            },
+                console.log('Что-то пошло не так!Сообщи об этом админу - pavl.mikhail@ya.ru');
+            }
         }],
         theme: true,
         // emphasizes business hours

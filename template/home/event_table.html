@@ -1,6 +1,16 @@
 {% extends 'home/struct.html' %}
+{% load static %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/datepicker/css/pignose.calendar.css' %}">
+{% endblock %}
 
 {% block event_table %}
+  <div class="form-inline col-md-offset-8 col-sm-offset-8 col-xs-offset-8">
+    <input type="text" onclick="calendar()" class="form-control input-calendar pull-right" value="{{ required_date }}">
+  </div>
+
   <ul class="nav nav-tabs" id="myTabs">
     <li {% if tab == 'tasks' or not tab %} class="active" {% endif %}><a href="#tasks" data-toggle="pill">Tasks</a></li>
     <li {% if tab == 'notices' %} class="active" {% endif %}><a href="#notices" data-toggle="pill">Notices</a></li>
@@ -10,7 +20,7 @@
     " id="tasks">
       <div class="panel panel-default">
         <div class="panel-heading">
-          Active events<br/>
+          Active events
           {% block message %}{% endblock %}
         </div>
         <div class="table-responsive">
@@ -103,5 +113,18 @@
       a.text("click here");
       a.attr({style: "font-size:12px; color:indigo"});
     })
+  </script>
+  <script src="{% static 'assets/datepicker/js/moment.min.js' %}"></script>
+  <script src="{% static 'assets/datepicker/js/pignose.calendar.min.js' %}"></script>
+  <script type="text/javascript">
+      $('.input-calendar').pignoseCalendar({
+          theme: 'dark',
+          format: 'DD.MM.YYYY',
+          buttons: true,
+          apply: function () {
+              window.location.href = window.location.href.replace(/[\?#].*|$/, '?date=' + $('.input-calendar').val())
+          }
+      });
+
   </script>
 {% endblock %}
