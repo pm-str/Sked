@@ -11,41 +11,43 @@
 
     </div>
     <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        {% include 'base/menu.html' %}
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
+      {% if request.user %}
+        <ul class="nav navbar-nav">
+          {% include 'base/menu.html' %}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li>
-              {% if request.user %}
-                  <button class="btn btn-block btn-default" id="push" disabled></button><br>
-              {% endif %}
-            </li>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li>
+            {% if request.user %}
+              <button class="btn btn-block btn-default" id="push" disabled></button><br>
+            {% endif %}
+          </li>
 
-            {% if request.user.is_superuser %}
-              <li>
-                <a href="{% url 'admin:index' %}">Administration</a>
-              </li>
-            {% endif %}
+          {% if request.user.is_superuser %}
             <li>
-              <a href="#">Profile</a>
+              <a href="{% url 'admin:index' %}">Administration</a>
             </li>
-            <li class="divider"></li>
-            <li class="dropdown-header">
-              <p>You are <strong>{% if request.user %}{{ request.user }}{% else %}Anonymous{% endif %}</strong></p>
+          {% endif %}
+          <li>
+            <a href="#">Profile</a>
+          </li>
+          <li class="divider"></li>
+          <li class="dropdown-header">
+            <p>You are <strong>{{ request.user }}</strong></p>
+          </li>
+          {% if  request.user.is_authenticated %}
+            <li>
+              <a href="{% url 'auth:logout' %}">Logout</a>
             </li>
-            {% if  request.user.is_authenticated %}
-              <li>
-                <a href="{% url 'auth:logout' %}">Logout</a>
-              </li>
-            {% else %}
-              <li>
-                <a href="{% url 'auth:login' %}">Login</a>
-              </li>
-            {% endif %}
-          </ul>
+          {% else %}
+            <li>
+              <a href="{% url 'auth:login' %}">Login</a>
+            </li>
+          {% endif %}
+        </ul>
+      {% endif %}
         </li>
       </ul>
     </div>

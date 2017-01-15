@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from .views import AddWord, ChangeWord, DeleteWord
 
@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^search', "app.english_words.views.search", name='search'),
     url(r'^change_word/(?P<pk>\d+)', ChangeWord.as_view(app_header='Change word'), name='change_word'),
     url(r'^delete_word/(?P<pk>\d+)', DeleteWord.as_view(app_header='Delete word'), name='delete_word'),
+    url(r'^api/', include('app.english_words.api.urls')),
 ]

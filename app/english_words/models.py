@@ -9,7 +9,7 @@ class Word(models.Model):
     transcription = models.CharField(verbose_name='Transcription', max_length=128, blank=True)
     translation = models.TextField(verbose_name='Translation', max_length=1000)
     example = models.TextField(verbose_name='Example', max_length=1000, blank=True)
-    last_request = models.DateTimeField(auto_now_add=True, verbose_name='Last request', blank=True)
+    last_request = models.DateTimeField(default='1901-01-01', verbose_name='Last request', blank=True)
     modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):

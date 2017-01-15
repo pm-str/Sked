@@ -4,7 +4,7 @@
   <a href="{{ home_url }}">Current</a>
 </li>
 {% url 'home:add_event' as events %}
-<li {% if request.path == events %} class="active" {% endif %}>
+<li {% if request.path == events or request.resolver_match.url_name == 'change_event' %} class="active" {% endif %}>
   <a href="{{ events }}">Events</a>
 </li>
 {% url 'schedule:calendar' as calendar %}
@@ -12,6 +12,6 @@
   <a href="{{ calendar }}">Calendar</a>
 </li>
 {% url 'english_words:dictionary' as dictionary %}
-<li {% if request.path == dictionary %} class="active" {% endif %}>
+<li {% if request.path == dictionary or request.resolver_match.url_name == 'change_word' %} class="active" {% endif %}>
   <a href="{{ dictionary }}">Dictionary</a>
 </li>
