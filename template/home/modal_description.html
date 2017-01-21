@@ -1,3 +1,5 @@
+{% load customs %}
+
 <div class="modal fade" id="my{{ object.id }}" tabindex="-1" role="dialog" aria-labelledby="myDetailsLabel"
      aria-hidden="true">
   <div class="modal-dialog">
@@ -18,7 +20,7 @@
             {% if object.description %}
               <tr>
                 <td>Описание</td>
-                <td>{{ object.description }}</td>
+                <td>{{ object.description |make_link:16 }}</td>
               </tr>
             {% endif %}
 

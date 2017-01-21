@@ -1,5 +1,6 @@
 {% extends 'home/struct.html' %}
 {% load static %}
+{% load customs %}
 
 {% block css %}
   {{ block.super }}
@@ -86,7 +87,7 @@
                       class="small" style="color:darkgray">Edit</span></a>
             </span>
           </p>
-          <pre>{{ notice.description|urlizetrunc:15 }}</pre>
+          <pre>{{ notice.description| make_link:12 }}</pre>
         </div>
       {% empty %}
         <p class="text-center lead text-info">Empty.</p>
@@ -106,13 +107,6 @@
       $.post(url, {'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()});
       location.reload();
     }
-  </script>
-  <script>
-    $(function () {
-      a = $("a[rel=nofollow]");
-      a.text("click here");
-      a.attr({style: "font-size:12px; color:indigo"});
-    })
   </script>
   <script src="{% static 'assets/datepicker/js/moment.min.js' %}"></script>
   <script src="{% static 'assets/datepicker/js/pignose.calendar.min.js' %}"></script>

@@ -11,5 +11,6 @@ class WordForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Word'}),
             'transcription': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '[ transcription ]'}),
             'translation': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Translation'}),
-            'example': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Example ... '}),
+            'example': forms.Textarea(attrs={'onkeyup': 'auto_grow(this)', 'class': 'form-control ta-size',
+                                             'placeholder': 'Example ... '}),
         }
