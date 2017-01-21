@@ -7,9 +7,9 @@ from app.user.models import UserProfile
 class WordSerializer(serializers.Serializer):
     id = serializers.IntegerField(required=False)
     name = serializers.CharField(max_length=128)
-    transcription = serializers.CharField(max_length=128, required=False)
+    transcription = serializers.CharField(max_length=128, required=False, allow_blank=True)
     translation = serializers.CharField(max_length=1000)
-    example = serializers.CharField(max_length=1000, required=False)
+    example = serializers.CharField(max_length=1000, required=False, allow_blank=True)
 
     def create(self, validated_data):
         """

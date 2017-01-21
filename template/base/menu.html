@@ -1,6 +1,5 @@
 {% url 'home:current' as home_url %}
-{% url 'default' as default %}
-<li {% if request.path == home_url or request.path == default %} class="active" {% endif %}>
+<li {% if request.resolver_match.url_name == 'current' %} class="active" {% endif %}>
   <a href="{{ home_url }}">Current</a>
 </li>
 {% url 'home:add_event' as events %}

@@ -1,6 +1,14 @@
 {% extends 'base/base_page.html' %}
 
 {% block css %}
+
+  <style>
+    .ta-size {
+      resize: none;
+      overflow: hidden;
+      max-height: 70px;
+    }
+  </style>
   {{ block.super }}
 {% endblock %}
 
