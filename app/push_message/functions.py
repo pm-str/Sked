@@ -8,15 +8,10 @@ TIME_TO_LIVE = 86400
 
 
 def push_message(username, token, pk):
+    print(token, pk)
     gcm = GCM(GCM_APIKEY)
-    try:
-        gcm.plaintext_request(registration_id=token, data={}, collapse_key='new', time_to_live=TIME_TO_LIVE)
-    except Exception as r:
-        # delete task from queue
-        AwaitingDelivery.objects.filter(pk=pk)[0].delete()
-        print('Exception was occurred: ', r)
-    else:
-        print('Message was sent to {}'.format(username.encode('utf-8')))
+    gcm.plaintext_request(registration_id=token, data={}, collapse_key='new', time_to_live=TIME_TO_LIVE)
+    # AwaitingDelivery.objects.filter(pk=pk)[0].delete()
 
 
 def clear_queue():

@@ -1,3 +1,7 @@
-# running celery tasks
-(venv) pmv@pmv:~/Projects/Sked/Sked$ celery -A app.celery_tasks beat -l info
-(venv) pmv@pmv:~/Projects/Sked/Sked$ celery -A app.celery_tasks worker -l info
+python3 pip3
+
+python3 -m pip install -r requirements.txt
+python3 ./manage.py runserver
+
+celery -A app.celery_tasks beat -l info
+celery -A app.celery_tasks worker -l info
