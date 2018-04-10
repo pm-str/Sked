@@ -65,7 +65,7 @@ target/
 .idea
 
 # database
-db.sqlite3
+# db.sqlite3
 
 #media and static files
 www
